@@ -21,12 +21,10 @@ app.secret_key = os.environ.get("FLASK_SECRET_KEY", "your-secret-key")
 def local_video(file_path,thumbnail):
   files=file_path
   thumbnail=thumbnail
-  clip=VideoFileClip(files)
-  audio=clip.audio
-  audio.write_audiofile("temp.wav")
-  model=whisper.load_model("base")
-  result=model.transcribe("temp.wav")
-  text=result["text"]
+  HF_API="https://sonuramashish22028704-npmeduai.hf.space/ingestion"
+  res=requests.post(HF_API,files,timeout=600)
+  response=str(res)
+  text=response
   llm = Ollama(model="mistral:7b",temperature=0.5)
   descriptionp = PromptTemplate(
             input_variables=["video_d"],
